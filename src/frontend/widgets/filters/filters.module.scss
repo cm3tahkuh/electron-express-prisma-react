@@ -1,0 +1,40 @@
+.sliderRoot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  touch-action: none;
+  width: 200px;
+  height: 20px;
+}
+
+.sliderTrack {
+  background-color: rgb(225, 225, 225);
+  position: relative;
+  flex-grow: 1;
+  border-radius: 9999px;
+  height: 3px;
+}
+
+.sliderRange {
+  position: absolute;
+  background-color: greenyellow;
+  border-radius: 9999px;
+  height: 100%;
+}
+
+.sliderThumb {
+  transition: all 0.3s ease;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  // box-shadow: 0 2px 10px black;
+  border: 1px solid #c9c9c9;
+  border-radius: 10px;
+}
+
+.sliderThumb:focus {
+  outline: none;
+  background-color: greenyellow;
+}

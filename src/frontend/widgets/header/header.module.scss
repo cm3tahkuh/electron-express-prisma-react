@@ -1,0 +1,33 @@
+.header__logo {
+  transition: all 0.7s ease;
+  &:hover {
+    transform: rotate(360deg);
+  }
+}
+
+.header__link {
+  position: relative;
+
+  &.active {
+    &::after {
+      width: 100%;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+  }
+  &::after {
+    transition: all 0.3s ease;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 1px;
+    background-color: #bdee63;
+  }
+  &:hover {
+    &::after {
+      width: 100%;
+    }
+  }
+}

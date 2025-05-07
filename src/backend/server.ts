@@ -1,26 +1,36 @@
-const express = require("express");
-import { Request, Response } from "express";
-import { PrismaClient } from "./generated/prisma/";
-
-const cors = require('cors')
+import express, { Request, Response } from "express";
 const app = express();
-const PORT = 3333;
-const prisma = new PrismaClient();
+import routes from "./routes/index";
+import init from "./init";
+import cors from "cors";
 
 
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
-app.get("/", (req: any, res: any) => {
-  res.send("Hello World from Express!");
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
+
+app.use("/api", routes);
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("COCA COLA");
 });
 
-app.get("/users", async (req: Request, res: Response) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
-});
+const PORT = 5555;
 
-app.listen(PORT, () => {
-  console.log(`Express server running on port ${PORT}`);
-});
+const startServer = async () => {
+  await init();
+
+  // Запуск сервера
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+};
+
+startServer();

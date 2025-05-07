@@ -4,6 +4,8 @@ import started from "electron-squirrel-startup";
 
 import { spawn } from "node:child_process";
 
+
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
@@ -12,12 +14,14 @@ if (started) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1366,
+    height: 768,
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
       webSecurity: true,
       preload: path.join(__dirname, "preload.js"),
-      devTools: false,  // - это отображение инструментов разработчика, отключает их
+      // devTools: false,  // - это отображение инструментов разработчика, отключает их
     },
   });
 
@@ -35,10 +39,18 @@ const createWindow = () => {
 };
 
 const startExpressServer = () => {
-  const serverPath = path.resolve(__dirname, "../../src/backend/server.ts");
+  const serverPath = path.join(__dirname, "../../src/backend/server.ts");
   const serverProcess = spawn("ts-node", [serverPath], {
     stdio: "inherit",
     shell: true,
+  });
+
+  serverProcess.on("data", (data) => {
+    console.log(`Server stdout: ${data}`);
+  });
+
+  serverProcess.on("close", (code) => {
+    console.log(`Express server process exited with code ${code}`);
   });
 
   serverProcess.on("error", (err) => {
@@ -50,8 +62,8 @@ const startExpressServer = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
-  createWindow();
   startExpressServer();
+  createWindow();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

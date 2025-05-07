@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src/frontend/",
+    "paths": {
+      "@styles/*": ["styles/*"],
+      "@pages/*": ["pages/*"],
+      "@widgets/*": ["widgets/*"],
+      "@shared/*": ["shared/*"],
+      "@store/*": ["store/*"],
+      "@api/*": ["api/*"]
+    },
     "target": "ESNext",
     "module": "commonjs",
     "allowJs": true,
@@ -7,10 +16,11 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "baseUrl": ".",
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "allowImportingTsExtensions": true
   }
 }
