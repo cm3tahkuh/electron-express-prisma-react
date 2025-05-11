@@ -1,4 +1,5 @@
 import { Card, Text, Heading, Flex } from "@radix-ui/themes";
+import styles from './card.module.scss'
 
 interface CardProps {
   title: string;
@@ -16,7 +17,7 @@ export const CardProduct: React.FC<CardProps> = ({
   image,
 }) => {
   return (
-    <Card style={{height: "100%"}} variant="classic">
+    <Card className={styles.card} style={{height: "100%"}} variant="classic">
       <Flex direction="column" height="100%" justify="center" maxWidth="200px">
         <img
           style={{

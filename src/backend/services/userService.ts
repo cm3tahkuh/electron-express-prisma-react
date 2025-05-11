@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 export const getAllUsersService = async () => {
   return await prisma.user.findMany({
+    where: { deletedAt: null },
     select: {
       id: true,
       login: true,
@@ -94,20 +95,21 @@ export const updateUserService = async (
 export const deleteUserService = async (id: number) => {
   const cartIdToDelete = await prisma.cart.findFirst({ where: { userId: id } });
 
-  const deletedCartItems = await prisma.cartItem.deleteMany({
+  const deletedCartItems = await prisma.cartItem.updateMany({
     where: { cartId: cartIdToDelete?.id },
-  });
-
-  const deletedCart = await prisma.cart.delete({
-    where: {
-      userId: id,
+    data: {
+      deletedAt: new Date(),
     },
   });
 
-  const deletedUser = await prisma.user.delete({
-    where: {
-      id: id,
-    },
+  const deletedCart = await prisma.cart.update({
+    where: { id: cartIdToDelete?.id },
+    data: { deletedAt: new Date() },
+  });
+
+  const deletedUser = await prisma.user.update({
+    where: { id: id },
+    data: { deletedAt: new Date() },
   });
 
   return deletedUser;

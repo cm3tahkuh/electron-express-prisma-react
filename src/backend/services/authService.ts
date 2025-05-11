@@ -55,6 +55,7 @@ export const loginCustomerService = async ({ login, password }: User) => {
     where: {
       login: login,
       password: password,
+      deletedAt: null,
     },
   });
 

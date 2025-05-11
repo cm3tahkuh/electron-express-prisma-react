@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-const SECRET_KEY = "teatadaaavadvfad";
+const SECRET_KEY = process.env.SECRET_KEY as string;
 
 interface Role {
   roleName: string;

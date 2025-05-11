@@ -7,7 +7,6 @@ import { AdminPanel } from "@pages/adminpanel";
 import { CartPage } from "@pages/cartpage";
 
 
-
 export const routes: RouteObject[] = [
   {
     path: "/",

@@ -20,7 +20,7 @@ export const SalesPanel: React.FC = () => {
     queryFn: getAllSales,
   });
 
-  console.log(data);
+
 
   return (
     <>
@@ -32,7 +32,7 @@ export const SalesPanel: React.FC = () => {
         <Flex direction="column" gap="4">
           {data?.map((sale: any) =>
             sale.SaleItem.map((saleInfo: any) => (
-              <Card>
+              <Card key={saleInfo.id}>
                 <Flex
                   style={{ padding: "24px" }}
                   gap="8"
@@ -53,7 +53,9 @@ export const SalesPanel: React.FC = () => {
                       </DataList.Item>
                       <DataList.Item>
                         <DataList.Label minWidth="122px">Цена</DataList.Label>
-                        <DataList.Value><Text color="lime">{saleInfo.price} ₽</Text></DataList.Value>
+                        <DataList.Value>
+                          <Text color="lime">{saleInfo.price} ₽</Text>
+                        </DataList.Value>
                       </DataList.Item>
                       <DataList.Item>
                         <DataList.Label minWidth="122px">
@@ -65,13 +67,23 @@ export const SalesPanel: React.FC = () => {
                         <DataList.Label minWidth="122px">
                           Общая прибыль
                         </DataList.Label>
-                        <DataList.Value><Text color="lime">{saleInfo.quantity * saleInfo.price} ₽</Text></DataList.Value>
+                        <DataList.Value>
+                          <Text color="lime">
+                            {saleInfo.quantity * saleInfo.price} ₽
+                          </Text>
+                        </DataList.Value>
                       </DataList.Item>
                       <DataList.Item>
                         <DataList.Label minWidth="122px">
                           Покупатель
                         </DataList.Label>
                         <DataList.Value>{sale.user.login}</DataList.Value>
+                      </DataList.Item>
+                      <DataList.Item>
+                        <DataList.Label minWidth="122px">Время</DataList.Label>
+                        <DataList.Value>
+                          {new Date(sale.soldAt).toLocaleString()}
+                        </DataList.Value>
                       </DataList.Item>
                     </DataList.Root>
                   </Card>

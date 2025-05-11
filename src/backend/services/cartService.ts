@@ -50,21 +50,18 @@ export const addToCartService = async ({
   token: string;
 }) => {
   try {
-    // 1. Валидация и извлечение userId из токена
     const decoded = verifyToken(token) as {
       user: { id: number };
     };
 
     const userId = decoded.user.id;
 
-    // 2. Найти или создать корзину
     let cart = await prisma.cart.findUnique({ where: { userId } });
 
     if (!cart) {
       throw new Error("Пользователь не имеет права совершать покупки");
     }
 
-    // 3. Найти товар в корзине
     const existingItem = await prisma.cartItem.findFirst({
       where: {
         productId: productId,
@@ -72,7 +69,15 @@ export const addToCartService = async ({
       },
     });
 
-    if (existingItem) {
+    const existingProduct = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (existingItem && existingProduct) {
+      if (existingItem.quantity + 1 > existingProduct.quantity) {
+        throw new Error("Вы добавили предел товара в вашу корзину");
+      }
+
       const updatedItem = await prisma.cartItem.update({
         where: {
           id: existingItem.id,
@@ -84,7 +89,6 @@ export const addToCartService = async ({
       return updatedItem;
     }
 
-    // Если товара нет в корзине, добавляем его
     const cartItem = await prisma.cartItem.create({
       data: {
         productId: productId,
@@ -94,9 +98,9 @@ export const addToCartService = async ({
     });
 
     return cartItem;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    throw new Error("Ошибка при добавлении товара в корзину");
+    throw new Error(error.message);
   }
 };
 

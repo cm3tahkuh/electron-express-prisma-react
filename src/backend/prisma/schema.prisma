@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma/"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -15,13 +15,14 @@ model Role {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  login    String @unique
-  password String
-  roleId   Int
-  Cart     Cart?
-  Sale     Sale[]
-  role     Role   @relation(fields: [roleId], references: [id])
+  id        Int       @id @default(autoincrement())
+  login     String    @unique
+  password  String
+  roleId    Int
+  Cart      Cart?
+  Sale      Sale[]
+  role      Role      @relation(fields: [roleId], references: [id])
+  deletedAt DateTime?
 }
 
 model Cart {
@@ -29,15 +30,17 @@ model Cart {
   userId   Int        @unique
   User     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   CartItem CartItem[]
+  deletedAt DateTime?
 }
 
 model CartItem {
-  id        Int     @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   productId Int
   cartId    Int
-  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id])
+  cart      Cart      @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product   @relation(fields: [productId], references: [id])
   quantity  Int
+  deletedAt DateTime?
 }
 
 model Product {
@@ -50,6 +53,7 @@ model Product {
   createdAt   DateTime   @default(now())
   cartItems   CartItem[]
   saleItems   SaleItem[]
+  deletedAt   DateTime?
 }
 
 model Sale {

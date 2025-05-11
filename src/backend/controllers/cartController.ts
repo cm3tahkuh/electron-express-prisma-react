@@ -55,9 +55,7 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json(cartItem);
   } catch (error: any) {
-    res
-      .status(500)
-      .json({ message: error.message || "Ошибка добавления товара" });
+    res.status(500).json({ message: error.message });
   }
 };
 

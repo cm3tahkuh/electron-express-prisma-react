@@ -25,7 +25,7 @@ export const CartPage: React.FC = () => {
   const queryClient = useQueryClient();
 
   // получение товара
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["cart", token],
     queryFn: getCartByUserId,
   });
@@ -95,60 +95,68 @@ export const CartPage: React.FC = () => {
 
   return (
     <Box>
-      <Heading mb="2" align="center" size="8" as="h1">
-        Корзина
-      </Heading>
-      <Text as="p" align="center" weight="medium">
-        Ваши покупки, {user?.login}
-      </Text>
-      <Box>
-        <Container size="4">
-          <Flex gap="5" align="center" justify="center" p="5" wrap="wrap">
-            {data?.items.map((product: any) => (
-              <Flex key={product.id} direction="column" gap="2">
-                <CardProduct
-                  title={product.name}
-                  description={product.description}
-                  price={product.price}
-                  quantity={product.quantity}
-                  image={product.image}
-                />
+      {isLoading ? (
+        <Heading mb="2" align="center" size="8" as="h1">
+          Корзина
+        </Heading>
+      ) : (
+        <>
+          <Heading mb="2" align="center" size="8" as="h1">
+            Корзина
+          </Heading>
+          <Text as="p" align="center" weight="medium">
+            Ваши покупки, {user?.login}
+          </Text>
+          <Box>
+            <Container size="4">
+              <Flex gap="5" align="center" justify="center" p="5" wrap="wrap">
+                {data?.items.map((product: any) => (
+                  <Flex key={product.id} direction="column" gap="2">
+                    <CardProduct
+                      title={product.name}
+                      description={product.description}
+                      price={product.price}
+                      quantity={product.quantity}
+                      image={product.image}
+                    />
 
-                <Button
-                  onClick={() => {
-                    if (product.id && token) {
-                      deleteMutation.mutate({
-                        productId: product.productId,
-                        token: token,
-                      });
-                    }
-                  }}
-                  color="red"
-                  variant="classic"
-                >
-                  Удалить
-                </Button>
+                    <Button
+                      onClick={() => {
+                        if (product.id && token) {
+                          deleteMutation.mutate({
+                            productId: product.productId,
+                            token: token,
+                          });
+                        }
+                      }}
+                      color="red"
+                      variant="classic"
+                    >
+                      Удалить
+                    </Button>
+                  </Flex>
+                ))}
               </Flex>
-            ))}
-          </Flex>
-          <Button
-            variant="classic"
-            style={{
-              position: "absolute",
-              bottom: "0",
-              width: "100%",
-              padding: "24px",
-            }}
-            onClick={() => {
-              if (token) {
-                createMutation.mutate({ token: token });
-              }
-            }}
-          >
-            Оформить покупку
-          </Button>
-        </Container>
-      </Box>
+            </Container>
+            <Button
+              variant="classic"
+              style={{
+                position: "fixed",
+                bottom: "0",
+                width: "100%",
+                padding: "24px",
+              }}
+              onClick={() => {
+                if (token) {
+                  createMutation.mutate({ token: token });
+                }
+              }}
+            >
+              Оформить покупку
+            </Button>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

@@ -29,7 +29,12 @@ export const addNewCartItem = async (productId: number, token: string) => {
   });
 
   if (!response.ok) {
-    throw new Error("Произошла ошибка при добавлении товара в корзину");
+    const errorData = await response.json();
+
+    const errorMessage =
+      errorData.message || `Ошибка с кодом ${response.status}`;
+
+    throw new Error(errorMessage);
   }
 
   return response.json();
@@ -50,4 +55,3 @@ export const deleteCartItem = async (productId: number, token: string) => {
 
   return response.json();
 };
-

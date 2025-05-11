@@ -11,7 +11,7 @@ interface Product {
 }
 
 export const getAllProductsService = async () => {
-  return await prisma.product.findMany();
+  return await prisma.product.findMany({ where: { deletedAt: null } });
 };
 
 export const addProductService = async (product: Product) => {
@@ -51,9 +51,12 @@ export const updateProductService = async ({
 };
 
 export const deleteProductService = async (id: number) => {
-  return await prisma.product.delete({
+  return await prisma.product.update({
     where: {
       id: id,
+    },
+    data: {
+      deletedAt: new Date(),
     },
   });
 };
@@ -75,6 +78,8 @@ export const getProductsBySortingService = async ({
 
     const whereClause: any = {};
 
+    whereClause.deletedAt = null;
+
     if (typeof minPrice === "number" && typeof maxPrice === "number") {
       whereClause.price = {
         gte: minPrice,
@@ -93,6 +98,7 @@ export const getProductsBySortingService = async ({
       gt: 0,
     };
 
+    whereClause.deletedAt = null;
     const products = await prisma.product.findMany({
       where: whereClause,
       orderBy: orderByClause,

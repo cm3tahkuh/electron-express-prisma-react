@@ -4,8 +4,6 @@ import routes from "./routes/index";
 import init from "./init";
 import cors from "cors";
 
-
-
 app.use(express.json());
 app.use(cors());
 
