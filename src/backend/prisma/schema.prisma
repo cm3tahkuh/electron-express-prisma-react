@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlserver"
-  url      = "sqlserver://ILABSQLW19S1:49172;database=vinylstore1;trustServerCertificate=true;Integrated Security=true;"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Role {
