@@ -2,10 +2,9 @@ import { app, BrowserWindow } from "electron";
 import path from "node:path";
 import started from "electron-squirrel-startup";
 
-import { spawn } from "node:child_process";
-
-
-
+import { exec, spawn } from "node:child_process";
+import { utilityProcess } from "electron";
+import log from "electron-log";
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
@@ -38,24 +37,36 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
+let serverProcess: any = null;
+
 const startExpressServer = () => {
-  const serverPath = path.join(__dirname, "../../src/backend/server.ts");
-  const serverProcess = spawn("ts-node", [serverPath], {
-    stdio: "inherit",
-    shell: true,
+  const serverPath = path.join(__dirname, "../../src/backend/server.js");
+  console.log(`тот самый путь - ${serverPath}`)
+  log.info(`Starting server at: ${serverPath}`);
+  serverProcess = spawn("node", [serverPath]);
+
+  serverProcess.stdout.on("data", (data: any) => {
+    log.info(`Server stdout: ${data}`);
   });
 
-  serverProcess.on("data", (data) => {
-    console.log(`Server stdout: ${data}`);
+  serverProcess.stderr.on("data", (data: any) => {
+    log.error(`Server stderr: ${data}`);
   });
 
-  serverProcess.on("close", (code) => {
-    console.log(`Express server process exited with code ${code}`);
+  serverProcess.on("close", (code: any) => {
+    log.info(`Server process exited with code ${code}`);
   });
+};
 
-  serverProcess.on("error", (err) => {
-    console.error("Ошибка при запуске сервера:", err);
-  });
+// Function to stop the running process
+const stopExpressServer = () => {
+  if (serverProcess) {
+    // Terminate the process
+    const killer = serverProcess.kill();
+    console.log("Server process terminated.");
+  } else {
+    console.log("No server process running.");
+  }
 };
 
 // This method will be called when Electron has finished
@@ -71,6 +82,7 @@ app.on("ready", () => {
 // explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
+    stopExpressServer();
     app.quit();
   }
 });
