@@ -26,10 +26,10 @@ model User {
 }
 
 model Cart {
-  id       Int        @id @default(autoincrement())
-  userId   Int        @unique
-  User     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  CartItem CartItem[]
+  id        Int        @id @default(autoincrement())
+  userId    Int        @unique
+  User      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  CartItem  CartItem[]
   deletedAt DateTime?
 }
 

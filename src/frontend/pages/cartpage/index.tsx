@@ -14,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CardProduct } from "@widgets/card";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export const CartPage: React.FC = () => {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -62,15 +63,25 @@ export const CartPage: React.FC = () => {
 
   if (!user) {
     return (
-      <Heading align="center" as="h2">
-        Войдите в систему для просмотра корзины.
-      </Heading>
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
+      >
+        <Heading align="center" as="h2">
+          Войдите в систему для просмотра корзины.
+        </Heading>
+      </motion.div>
     );
   }
 
   if (data?.items.length === 0) {
     return (
-      <>
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
+      >
         {showSuccess && (
           <Callout.Root
             style={{
@@ -89,7 +100,7 @@ export const CartPage: React.FC = () => {
         <Heading align="center" as="h2">
           Корзина пуста.
         </Heading>
-      </>
+      </motion.div>
     );
   }
 
@@ -97,7 +108,7 @@ export const CartPage: React.FC = () => {
     <Box>
       {isLoading ? (
         <Heading mb="2" align="center" size="8" as="h1">
-          Корзина
+          Загрузка
         </Heading>
       ) : (
         <>
@@ -108,32 +119,50 @@ export const CartPage: React.FC = () => {
             Ваши покупки, {user?.login}
           </Text>
           <Box>
-            <Container size="4">
-              <Flex gap="5" align="center" justify="center" p="5" wrap="wrap">
+            <Container size="4" pb="9">
+              <Flex gap="5" align="stretch" justify="center" p="5" wrap="wrap">
                 {data?.items.map((product: any) => (
-                  <Flex key={product.id} direction="column" gap="2">
-                    <CardProduct
-                      title={product.name}
-                      description={product.description}
-                      price={product.price}
-                      quantity={product.quantity}
-                      image={product.image}
-                    />
-
-                    <Button
-                      onClick={() => {
-                        if (product.id && token) {
-                          deleteMutation.mutate({
-                            productId: product.productId,
-                            token: token,
-                          });
-                        }
-                      }}
-                      color="red"
-                      variant="classic"
+                  <Flex
+                    key={product.id}
+                    direction="column"
+                    justify="between"
+                    gap="2"
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, y: -50 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.7, ease: "easeInOut" }}
                     >
-                      Удалить
-                    </Button>
+                      <CardProduct
+                        title={product.name}
+                        description={product.description}
+                        price={product.price}
+                        quantity={product.quantity}
+                        image={product.image}
+                      />
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: -50 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.7, ease: "easeInOut" }}
+                    >
+                      <Button
+                        style={{ width: "100%" }}
+                        onClick={() => {
+                          if (product.id && token) {
+                            deleteMutation.mutate({
+                              productId: product.productId,
+                              token: token,
+                            });
+                          }
+                        }}
+                        color="red"
+                        variant="classic"
+                      >
+                        Удалить
+                      </Button>
+                    </motion.div>
                   </Flex>
                 ))}
               </Flex>

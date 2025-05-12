@@ -20,7 +20,7 @@ const createWindow = () => {
       contextIsolation: false,
       webSecurity: true,
       preload: path.join(__dirname, "preload.js"),
-      // devTools: false,  // - это отображение инструментов разработчика, отключает их
+      // devTools: false, // - это отображение инструментов разработчика, отключает их
     },
   });
 
@@ -41,7 +41,7 @@ let serverProcess: any = null;
 
 const startExpressServer = () => {
   const serverPath = path.join(__dirname, "../../src/backend/server.js");
-  console.log(`тот самый путь - ${serverPath}`)
+  console.log(`тот самый путь - ${serverPath}`);
   log.info(`Starting server at: ${serverPath}`);
   serverProcess = spawn("node", [serverPath]);
 

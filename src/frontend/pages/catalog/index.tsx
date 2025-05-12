@@ -18,6 +18,7 @@ import { Search } from "@widgets/search";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { motion } from "framer-motion";
 
 export const Catalog: React.FC = () => {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -93,12 +94,25 @@ export const Catalog: React.FC = () => {
   return (
     <Box>
       <Container size="4">
-        <Flex justify="between">
+        <Flex py="4" justify="between">
           <Box px="5">
-            <Filters onChange={handleFilterChange} />
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+            >
+              <Filters onChange={handleFilterChange} />
+            </motion.div>
           </Box>
           <Flex direction="column" gap="20px" width="70%" px="5">
-            <Search onChange={handleSearchChange} />
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+            >
+              <Search onChange={handleSearchChange} />
+            </motion.div>
+
             {isLoading ? (
               <Heading>Загрузка</Heading>
             ) : (
@@ -108,7 +122,12 @@ export const Catalog: React.FC = () => {
                 ) : (
                   data?.map((product: any) => {
                     return (
-                      <Flex key={product.id} direction="column" gap="2">
+                      <Flex
+                        justify="between"
+                        key={product.id}
+                        direction="column"
+                        gap="2"
+                      >
                         <div>
                           <Dialog.Root>
                             <Dialog.Trigger>
@@ -119,13 +138,22 @@ export const Catalog: React.FC = () => {
                                   outline: "none",
                                 }}
                               >
-                                <CardProduct
-                                  title={product.name}
-                                  description={product.description}
-                                  price={product.price}
-                                  quantity={product.quantity}
-                                  image={product.image}
-                                />
+                                <motion.div
+                                  initial={{ opacity: 0, y: 50 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  transition={{
+                                    duration: 0.7,
+                                    ease: "easeInOut",
+                                  }}
+                                >
+                                  <CardProduct
+                                    title={product.name}
+                                    description={product.description}
+                                    price={product.price}
+                                    quantity={product.quantity}
+                                    image={product.image}
+                                  />
+                                </motion.div>
                               </button>
                             </Dialog.Trigger>
 
@@ -165,19 +193,29 @@ export const Catalog: React.FC = () => {
                           </Dialog.Root>
                         </div>
                         {user && (
-                          <Button
-                            variant="classic"
-                            onClick={() => {
-                              if (product.id && token) {
-                                addMutation.mutate({
-                                  productId: product.id,
-                                  token: token,
-                                });
-                              }
+                          <motion.div
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{
+                              duration: 0.7,
+                              ease: "easeInOut",
                             }}
                           >
-                            Добавить в корзину
-                          </Button>
+                            <Button
+                              style={{ width: "100%" }}
+                              variant="classic"
+                              onClick={() => {
+                                if (product.id && token) {
+                                  addMutation.mutate({
+                                    productId: product.id,
+                                    token: token,
+                                  });
+                                }
+                              }}
+                            >
+                              Добавить в корзину
+                            </Button>
+                          </motion.div>
                         )}
                       </Flex>
                     );
@@ -186,32 +224,35 @@ export const Catalog: React.FC = () => {
               </Flex>
             )}
           </Flex>
+
           <Flex
             direction="column"
             gap="2"
             style={{
-              position: "absolute",
+              position: "fixed",
               bottom: 0,
               margin: "24px",
               transition: "all 0.2s ease",
             }}
           >
-            {showSuccess && (
-              <Callout.Root color="lime">
-                <Callout.Icon>
-                  <InfoCircledIcon />
-                </Callout.Icon>
-                <Callout.Text>Товар успешно добавлен в корзину</Callout.Text>
-              </Callout.Root>
-            )}
-            {showError && (
-              <Callout.Root color="red">
-                <Callout.Icon>
-                  <InfoCircledIcon />
-                </Callout.Icon>
-                <Callout.Text>{addMutation.error?.message}</Callout.Text>
-              </Callout.Root>
-            )}
+
+              {showSuccess && (
+                <Callout.Root color="lime">
+                  <Callout.Icon>
+                    <InfoCircledIcon />
+                  </Callout.Icon>
+                  <Callout.Text>Товар успешно добавлен в корзину</Callout.Text>
+                </Callout.Root>
+              )}
+              {showError && (
+                <Callout.Root color="red">
+                  <Callout.Icon>
+                    <InfoCircledIcon />
+                  </Callout.Icon>
+                  <Callout.Text>{addMutation.error?.message}</Callout.Text>
+                </Callout.Root>
+              )}
+           
           </Flex>
         </Flex>
       </Container>
