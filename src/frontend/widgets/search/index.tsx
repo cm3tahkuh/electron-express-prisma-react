@@ -20,6 +20,7 @@ export const Search: React.FC<SearchProps> = ({ onChange }) => {
       onChange={handleInputChange}
       variant="classic"
       placeholder="Поиск…"
+      data-testid="search-input"
     >
       <TextField.Slot>
         <MagnifyingGlassIcon height="16" width="16" />

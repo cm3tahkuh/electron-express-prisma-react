@@ -26,13 +26,16 @@ export const AdminPanel: React.FC = () => {
 
   const isAdmin = user.role.roleName === "admin";
 
-
   return (
     <Box p="4">
       <Flex mb="4" justify="between" align="center">
         <Heading>Админ-Панель</Heading>
         {user !== null ? (
-          <Text onClick={handleLogout} style={{ cursor: "pointer" }}>
+          <Text
+            data-testid="logout-button"
+            onClick={handleLogout}
+            style={{ cursor: "pointer" }}
+          >
             Выйти
           </Text>
         ) : (
@@ -42,14 +45,14 @@ export const AdminPanel: React.FC = () => {
 
       <Tabs.Root defaultValue={isAdmin ? "users" : "products"}>
         <Tabs.List>
-        <Tabs.Trigger value="products">Товары</Tabs.Trigger>
-        <Tabs.Trigger value="sales">История продаж</Tabs.Trigger>
+          <Tabs.Trigger value="products">Товары</Tabs.Trigger>
+          <Tabs.Trigger value="sales">История продаж</Tabs.Trigger>
           {isAdmin && <Tabs.Trigger value="users">Пользователи</Tabs.Trigger>}
         </Tabs.List>
 
         <Box pt="3">
           <Box>
-          <Tabs.Content value="products">
+            <Tabs.Content value="products">
               <ProductsPanel />
             </Tabs.Content>
 

@@ -112,85 +112,99 @@ export const ProductsPanel: React.FC = () => {
 
           <Dialog.Content maxWidth="450px">
             <Dialog.Title mb="4">Добавить новый товар</Dialog.Title>
-            <Dialog.Description></Dialog.Description>
+
             <Flex direction="column" gap="3">
-              <label>
+              <label htmlFor="product-name">
                 <Text as="div" size="2" mb="1" weight="bold">
                   Название
                 </Text>
-                <TextField.Root
-                  variant="classic"
-                  value={addProduct?.name}
-                  onChange={(event) =>
-                    setAddProduct((prev: any) => ({
-                      ...prev,
-                      name: event.target.value,
-                    }))
-                  }
-                />
               </label>
-              <label>
+              <TextField.Root
+                id="product-name"
+                aria-label="Название"
+                variant="classic"
+                value={addProduct?.name}
+                onChange={(e) =>
+                  setAddProduct((prev: any) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }))
+                }
+              />
+
+              <label htmlFor="product-description">
                 <Text as="div" size="2" mb="1" weight="bold">
                   Описание
                 </Text>
-                <TextField.Root
-                  variant="classic"
-                  value={addProduct?.description}
-                  onChange={(event) =>
-                    setAddProduct((prev: any) => ({
-                      ...prev,
-                      description: event.target.value,
-                    }))
-                  }
-                />
               </label>
-              <label>
+              <TextField.Root
+                id="product-description"
+                aria-label="Описание"
+                variant="classic"
+                value={addProduct?.description}
+                onChange={(e) =>
+                  setAddProduct((prev: any) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
+              />
+
+              <label htmlFor="product-price">
                 <Text as="div" size="2" mb="1" weight="bold">
                   Цена
                 </Text>
-                <TextField.Root
-                  type="number"
-                  variant="classic"
-                  value={addProduct?.price}
-                  onChange={(event) =>
-                    setAddProduct((prev: any) => ({
-                      ...prev,
-                      price: Number(event.target.value),
-                    }))
-                  }
-                />
               </label>
-              <label>
+              <TextField.Root
+                id="product-price"
+                aria-label="Цена"
+                type="number"
+                variant="classic"
+                value={addProduct?.price}
+                onChange={(e) =>
+                  setAddProduct((prev: any) => ({
+                    ...prev,
+                    price: Number(e.target.value),
+                  }))
+                }
+              />
+
+              <label htmlFor="product-quantity">
                 <Text as="div" size="2" mb="1" weight="bold">
                   Количество
                 </Text>
-                <TextField.Root
-                  type="number"
-                  variant="classic"
-                  value={addProduct?.quantity}
-                  onChange={(event) =>
-                    setAddProduct((prev: any) => ({
-                      ...prev,
-                      quantity: Number(event.target.value),
-                    }))
-                  }
-                />
               </label>
-              <label>
+              <TextField.Root
+                id="product-quantity"
+                aria-label="Количество"
+                type="number"
+                variant="classic"
+                value={addProduct?.quantity}
+                onChange={(e) =>
+                  setAddProduct((prev: any) => ({
+                    ...prev,
+                    quantity: Number(e.target.value),
+                  }))
+                }
+              />
+
+              <label htmlFor="product-image">
                 <Text as="div" size="2" mb="1" weight="bold">
                   Изображение
                 </Text>
-                <TextField.Root
-                  variant="classic"
-                  value={addProduct?.image}
-                  onChange={(event) =>
-                    setAddProduct((prev: any) => ({
-                      ...prev,
-                      image: event.target.value,
-                    }))
-                  }
-                />
               </label>
+              <TextField.Root
+                id="product-image"
+                aria-label="Изображение"
+                variant="classic"
+                value={addProduct?.image}
+                onChange={(e) =>
+                  setAddProduct((prev: any) => ({
+                    ...prev,
+                    image: e.target.value,
+                  }))
+                }
+              />
             </Flex>
 
             <Flex gap="3" mt="4" justify="end">

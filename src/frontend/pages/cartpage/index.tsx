@@ -31,6 +31,11 @@ export const CartPage: React.FC = () => {
     queryFn: getCartByUserId,
   });
 
+  const total = data?.items.reduce(
+    (acc: number, item: any) => acc + item.price * item.quantity,
+    0
+  );
+
   // оформление заявки
   const createMutation = useMutation({
     mutationFn: ({ token }: { token: string }) => createSale(token),
@@ -166,6 +171,16 @@ export const CartPage: React.FC = () => {
                   </Flex>
                 ))}
               </Flex>
+              <Text
+                as="p"
+                align="center"
+                size="5"
+                weight="bold"
+                mt="6"
+                data-testid="cart-total"
+              >
+                Общая стоимость: {total}₽
+              </Text>
             </Container>
             <Button
               variant="classic"

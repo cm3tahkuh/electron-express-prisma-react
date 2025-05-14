@@ -2,7 +2,7 @@ import { describe, expect, it, beforeEach } from "vitest";
 import { screen, fireEvent } from "@testing-library/react";
 import { renderWithRouter } from "./utils/RenderWithRouter";
 
-describe("📦 Полный сценарий покупки", () => {
+describe("📦 Покупка товаров", () => {
   const login = `testCatalog_${Math.floor(Math.random() * 10000)}`;
   const password = "testpassword";
 
@@ -12,7 +12,7 @@ describe("📦 Полный сценарий покупки", () => {
     console.log("\n🔄 Очистка localStorage и возврат на /");
   });
 
-  it("Ошибка при попытке входа с несуществующим логином", async () => {
+  it("❌ [Негативный тест] Ошибка при попытке входа с несуществующим логином", async () => {
     const fakeLogin = `wronguser_${Math.floor(Math.random() * 10000)}`;
     const password = "wrongpass";
 
@@ -39,7 +39,7 @@ describe("📦 Полный сценарий покупки", () => {
     console.log("❌✅ Ошибка входа корректно отображена");
   });
 
-  it("Ошибка при регистрации с уже существующим логином", async () => {
+  it("❌ [Негативный тест] Ошибка при регистрации с уже существующим логином", async () => {
     const login = `existing_user_${Math.floor(Math.random() * 10000)}`;
     const password = "testpassword";
 

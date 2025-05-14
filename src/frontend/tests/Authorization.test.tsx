@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, beforeAll } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
-describe("Authorization page – ❌ Негативные кейсы", () => {
+describe("💾 Страница авторизации", () => {
   const queryClient = new QueryClient();
 
   const setup = () =>
