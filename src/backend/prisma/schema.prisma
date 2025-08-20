@@ -1,12 +1,20 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
+    binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
+// datasource db {
+//   provider = "sqlserver"
+//   url      = "sqlserver://ILABSQLW19S1:49172;database=vinylstore1;trustServerCertificate=true;Integrated Security=true;"
+// }
+
 datasource db {
-  provider = "sqlserver"
-  url      = "sqlserver://ILABSQLW19S1:49172;database=vinylstore1;trustServerCertificate=true;Integrated Security=true;"
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
+
+
 
 model Role {
   id       Int    @id @default(autoincrement())

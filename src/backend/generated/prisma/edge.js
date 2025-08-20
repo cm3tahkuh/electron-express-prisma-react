@@ -86,11 +86,7 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
-  ReadUncommitted: 'ReadUncommitted',
-  ReadCommitted: 'ReadCommitted',
-  RepeatableRead: 'RepeatableRead',
-  Serializable: 'Serializable',
-  Snapshot: 'Snapshot'
+  Serializable: 'Serializable'
 });
 
 exports.Prisma.RoleScalarFieldEnum = {
@@ -177,7 +173,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\github\\electron-express-prisma-react\\src\\backend\\generated\\prisma",
+      "value": "/home/user/Documents/electron-express-prisma-react/src/backend/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -186,12 +182,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\github\\electron-express-prisma-react\\src\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/user/Documents/electron-express-prisma-react/src/backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -203,17 +203,18 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlserver",
+  "activeProvider": "sqlite",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": null,
-        "value": "sqlserver://ILABSQLW19S1:49172;database=vinylstore1;trustServerCertificate=true;Integrated Security=true;"
+        "value": "file:./dev.db"
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlserver\"\n  url      = \"sqlserver://ILABSQLW19S1:49172;database=vinylstore1;trustServerCertificate=true;Integrated Security=true;\"\n}\n\nmodel Role {\n  id       Int    @id @default(autoincrement())\n  roleName String @unique\n  User     User[]\n}\n\nmodel User {\n  id        Int       @id @default(autoincrement())\n  login     String    @unique\n  password  String\n  roleId    Int\n  Cart      Cart?\n  Sale      Sale[]\n  role      Role      @relation(fields: [roleId], references: [id])\n  deletedAt DateTime?\n}\n\nmodel Cart {\n  id        Int        @id @default(autoincrement())\n  userId    Int        @unique\n  User      User       @relation(fields: [userId], references: [id], onDelete: Cascade)\n  CartItem  CartItem[]\n  deletedAt DateTime?\n}\n\nmodel CartItem {\n  id        Int       @id @default(autoincrement())\n  productId Int\n  cartId    Int\n  cart      Cart      @relation(fields: [cartId], references: [id], onDelete: Cascade)\n  product   Product   @relation(fields: [productId], references: [id])\n  quantity  Int\n  deletedAt DateTime?\n}\n\nmodel Product {\n  id          Int        @id @default(autoincrement())\n  name        String\n  description String\n  price       Int\n  quantity    Int\n  image       String\n  createdAt   DateTime   @default(now())\n  cartItems   CartItem[]\n  saleItems   SaleItem[]\n  deletedAt   DateTime?\n}\n\nmodel Sale {\n  id         Int        @id @default(autoincrement())\n  userId     Int\n  soldAt     DateTime   @default(now())\n  totalPrice Int\n  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)\n  SaleItem   SaleItem[]\n}\n\nmodel SaleItem {\n  id        Int     @id @default(autoincrement())\n  productId Int\n  saleId    Int\n  quantity  Int\n  price     Int\n  sale      Sale    @relation(fields: [saleId], references: [id])\n  product   Product @relation(fields: [productId], references: [id])\n}\n",
-  "inlineSchemaHash": "a0ca7136eee1d1263dbd9c354f7abefb42a4d8aab6d7606872dc3313553f3f5b",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../generated/prisma\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\n// datasource db {\n//   provider = \"sqlserver\"\n//   url      = \"sqlserver://ILABSQLW19S1:49172;database=vinylstore1;trustServerCertificate=true;Integrated Security=true;\"\n// }\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel Role {\n  id       Int    @id @default(autoincrement())\n  roleName String @unique\n  User     User[]\n}\n\nmodel User {\n  id        Int       @id @default(autoincrement())\n  login     String    @unique\n  password  String\n  roleId    Int\n  Cart      Cart?\n  Sale      Sale[]\n  role      Role      @relation(fields: [roleId], references: [id])\n  deletedAt DateTime?\n}\n\nmodel Cart {\n  id        Int        @id @default(autoincrement())\n  userId    Int        @unique\n  User      User       @relation(fields: [userId], references: [id], onDelete: Cascade)\n  CartItem  CartItem[]\n  deletedAt DateTime?\n}\n\nmodel CartItem {\n  id        Int       @id @default(autoincrement())\n  productId Int\n  cartId    Int\n  cart      Cart      @relation(fields: [cartId], references: [id], onDelete: Cascade)\n  product   Product   @relation(fields: [productId], references: [id])\n  quantity  Int\n  deletedAt DateTime?\n}\n\nmodel Product {\n  id          Int        @id @default(autoincrement())\n  name        String\n  description String\n  price       Int\n  quantity    Int\n  image       String\n  createdAt   DateTime   @default(now())\n  cartItems   CartItem[]\n  saleItems   SaleItem[]\n  deletedAt   DateTime?\n}\n\nmodel Sale {\n  id         Int        @id @default(autoincrement())\n  userId     Int\n  soldAt     DateTime   @default(now())\n  totalPrice Int\n  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)\n  SaleItem   SaleItem[]\n}\n\nmodel SaleItem {\n  id        Int     @id @default(autoincrement())\n  productId Int\n  saleId    Int\n  quantity  Int\n  price     Int\n  sale      Sale    @relation(fields: [saleId], references: [id])\n  product   Product @relation(fields: [productId], references: [id])\n}\n",
+  "inlineSchemaHash": "7227cdf26af41fd19adad8128f24c1db18274c80f93e6718469289768050ae06",
   "copyEngine": true
 }
 config.dirname = '/'
